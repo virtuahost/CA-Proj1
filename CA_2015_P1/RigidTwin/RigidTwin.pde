@@ -66,15 +66,15 @@ void draw() {      // executed at each frame
     fill(magenta); scribeHeader("3-BEAUTIFUL",3); 
     for(float s=0; s<=t; s+=0.1) {
      // for each s compute (P,V) for beautiful motion from (A,AB) to (C,CD)
-      pt P=A; // replace this
-      vec V=AB;   // replace this  
+      pt P = hermitePt(A, C, AB, CD, s);
+      vec V= hermiteVec(A, C, AB, CD, s);
      
       noFill(); pen(pink,3); drawObject(P,V);
       }
    // for t compute (P,V) for beautiful motion from (A,AB) to (C,CD)
      
-    pt P=A; // replace this
-    vec V=AB;   // replace this  
+    pt P = hermitePt(A, C, AB, CD, t);
+    vec V= hermiteVec(A, C, AB, CD, t);
     fill(magenta); pen(magenta,3); show(P,4); drawObject(P,V);
     }
 
