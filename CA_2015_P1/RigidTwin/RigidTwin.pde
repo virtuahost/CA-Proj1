@@ -1,6 +1,7 @@
 // LecturesInGraphics: vector interpolation
 // Template for sketches
-// Author: Jarek ROSSIGNAC
+// Author: James Moak, Deep Ghosh
+// Computational Aesthetics: Project 1 
 
 //**************************** global variables ****************************
 pts P = new pts();
@@ -122,7 +123,7 @@ void mouseDragged() {
 
 //**************************** text for name, title and help  ****************************
 String title ="CA 2015 P1: Interpolation", 
-       name ="Student: ??? ??????",
+       name ="Student: James Moak, Deep Ghosh",
        menu="?:(show/hide) help, a: animate, `:snap picture, ~:(start/stop) recording movie frames, Q:quit",
        guide="drag:edit P&V, t/r/z:trans/rotate/zoom all, 1/2/3:toggle linear/circular/beautiful"; // help info
 
