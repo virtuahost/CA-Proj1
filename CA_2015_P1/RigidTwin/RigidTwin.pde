@@ -47,15 +47,17 @@ void draw() {      // executed at each frame
   if(circular) {
     float a = angle(AB,CD);
     fill(brown); scribeHeader("2-CIRCULAR",2); 
+    pt F = getF(A, C, AB, CD); 
     for(float s=0; s<=t; s+=0.1) {
       // for each s compute fixed point F and (P,V) for along pure constant speed rotation around F from (A,AB) to (C,CD)
-      pt P=A;  // replace this
-      vec V=AB; // replace this    
+      noFill(); pen(red,3); show(F,4);
+      pt P = P(F, R(V(F, A), s*angle(AB, CD)));
+      vec V= R(AB,s*a); 
       noFill(); pen(sand,3); drawObject(P,V);
       }
     // for t compute fixed point F and (P,V) for along pure constant speed rotation around F from (A,AB) to (C,CD)
-    pt P=A; // replace this
-    vec V=AB;   // replace this  
+    pt P = P(F, R(V(F, A), t*angle(AB, CD)));
+    vec V= R(AB,t*a); 
     fill(brown); pen(brown,3); show(P,4); drawObject(P,V);
     }
 
@@ -64,7 +66,6 @@ void draw() {      // executed at each frame
     fill(magenta); scribeHeader("3-BEAUTIFUL",3); 
     for(float s=0; s<=t; s+=0.1) {
      // for each s compute (P,V) for beautiful motion from (A,AB) to (C,CD)
-       
       pt P=A; // replace this
       vec V=AB;   // replace this  
      
