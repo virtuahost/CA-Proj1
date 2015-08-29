@@ -20,6 +20,8 @@ pt hermitePt(pt P0, pt P1, vec V0, vec V1, float s) {
   
   U0.rotateBy(PI/2.0).scaleBy(scaling);
   U1.rotateBy(PI/2.0).scaleBy(scaling);
+  //U0.scaleBy(scaling);
+ // U1.scaleBy(scaling);
   
   float h1 = 2.0*pow(s,3.0) - 3.0*pow(s,2.0) + 1.0;
   float h2 = -2.0*pow(s,3.0) + 3.0*pow(s,2.0);
@@ -40,6 +42,8 @@ vec hermiteVec(pt P0, pt P1, vec V0, vec V1, float s) {
   
   U0.rotateBy(PI/2.0).scaleBy(scaling);
   U1.rotateBy(PI/2.0).scaleBy(scaling);
+  //U0.scaleBy(scaling);
+  //U1.scaleBy(scaling);
   
   float h1 = 6.0*pow(s,2.0) - 6.0*s;
   float h2 = -6.0*pow(s,2.0) + 6.0*s;
@@ -48,6 +52,7 @@ vec hermiteVec(pt P0, pt P1, vec V0, vec V1, float s) {
   pt p = P(h1*P0.x + h2*P1.x + h3*U0.x + h4*U1.x,
            h1*P0.y + h2*P1.y + h3*U0.y + h4*U1.y);
   vec v = R(V(p), -PI/2.0).normalize();
+  //vec v = V(p).normalize();
   v = S(n(V0), v);
   return v;
 }
