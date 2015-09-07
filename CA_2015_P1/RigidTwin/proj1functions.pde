@@ -73,9 +73,9 @@ vec getThirdFrameVec(pt A, pt C, vec AB, vec CD)
   return R(XY,PI);
 }
 
-pt nevilleFrame(pt P0, pt P1, pt P2,float s)
+pt nevilleFrame(pt P0, pt P1, pt P2, float s)
 {
-  pt P = L(L(P0,P1,s),L(P1,P2,s),s);  
+  pt P = L(L(P0,P1,s*2),L(P1,P2,s*2-1),s);  
   return P;
 }
 
