@@ -6,7 +6,7 @@
 //**************************** global variables ****************************
 pts P = new pts();
 float t=1, f=0;
-Boolean animate=true, linear=true, circular=true, beautiful=false, car=false, jarek=false;
+Boolean animate=true, linear=true, circular=true, beautiful=false, car=false, jarek=false, thirdFrame=false;
 PImage textureSource, jarekImg;
 float len=60; // length of arrows
 //**************************** initialization ****************************
@@ -103,6 +103,28 @@ void draw() {      // executed at each frame
     fill(red); pen(magenta,3); show(P,4); 
     noFill(); noStroke(); drawCar(P,V);
     }
+
+   if(thirdFrame) {
+    float a = angle(AB,CD);
+    fill(magenta); scribeHeader("5-THIRDFRAME",5); 
+    //Get the third frame for interpolation
+    pt tP = getThirdFramePT(A,C,AB,CD);
+    vec tV = getThirdFrameVec(A,C,AB,CD);
+    
+    
+    for(float s=0; s<=t; s+=0.1) {
+     // for each s compute (P,V) for beautiful motion using a third frame from (A,AB) to (C,CD)
+      pt P = nevilleFrame(A,tP,C,s);
+      vec V= R(AB,s*a); 
+     
+      noFill(); pen(pink,3); drawObject(P,V);
+      }
+   // for t compute (P,V) for beautiful motion from (A,AB) to (C,CD)
+     
+    pt P = nevilleFrame(A,tP,C,t);
+    vec V= R(AB,t*a); 
+    fill(magenta); pen(magenta,3); show(P,4); drawObject(P,V);
+    }
   pen(green,3); fill(green); show(A,4);  arrow(A,B); // show the start and end arrows
   pen(red,3); fill(red); show(C,4);  arrow(C,D); 
 
@@ -129,6 +151,7 @@ void keyPressed() { // executed each time a key is pressed: sets the "keyPressed
   if(key=='3') beautiful=!beautiful;
   if(key=='4') car=!car;
   if(key=='j') jarek=!jarek;
+  if(key=='5') thirdFrame=!thirdFrame;
   if(key=='Q') exit();  // quit application
   change=true; // to make sure that we save a movie frame each time something changes
   }
@@ -153,7 +176,7 @@ void mouseDragged() {
 String title ="CA 2015 P1: Interpolation", 
        name ="Student: James Moak, Deep Ghosh",
        menu="?:(show/hide) help, a: animate, `:snap picture, ~:(start/stop) recording movie frames, Q:quit",
-       guide="drag:edit P&V, t/r/z:trans/rotate/zoom all, 1/2/3/4:toggle linear/circular/beautiful/car, j:jarek-mode"; // help info
+       guide="drag:edit P&V, t/r/z:trans/rotate/zoom all, 1/2/3/4/5:toggle linear/circular/beautiful/car/thirdFrame, j:jarek-mode"; // help info
 
 void drawObject(pt P, vec V) {
   beginShape(); 

@@ -57,6 +57,40 @@ vec hermiteVec(pt P0, pt P1, vec V0, vec V1, float s) {
   return v;
 }
 
+pt getThirdFramePT(pt A, pt C,vec AB, vec CD)
+{
+  pt P = P(A,W(0.5,V(A,C)));
+  if(abs(dot(AB,CD)) == 1)return P;
+  P = findIntersction(A,P(A,AB),C,P(C,CD));
+  return P;
+}
+
+vec getThirdFrameVec(pt A, pt C, vec AB, vec CD)
+{
+  pt cenF = getF(A,C,AB,CD);
+  float angle = angle(V(A,cenF), V(C,cenF));
+  vec XY = R(AB,angle/2);
+  return R(XY,PI);
+}
+
+pt nevilleFrame(pt P0, pt P1, pt P2,float s)
+{
+  pt P = L(L(P0,P1,s),L(P1,P2,s),s);  
+  return P;
+}
+
+pt findIntersction(pt P0, pt P1, pt P2,pt P3)
+{
+  //Equation 1
+  float m0 = (P0.y - P1.y)/(P0.x - P1.x);
+  float m1 = (P2.y - P3.y)/(P2.x - P3.x);
+  float c0 = P0.y - m0*P0.x;
+  float c1 = P2.y - m1*P2.x;
+  float X = (c1-c0)/(m0-m1);
+  float Y = m0*X + c0;
+  return P(X,Y);
+}
+
 pt carPt(pt P0, pt P1, vec V0, vec V1, float s) {
   vec U0 = V(V0);
   vec U1 = V(V1);
