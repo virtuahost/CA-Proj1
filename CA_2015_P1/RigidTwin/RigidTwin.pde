@@ -6,23 +6,26 @@
 //**************************** global variables ****************************
 pts P = new pts();
 float t=1, f=0;
-Boolean animate=true, linear=true, circular=true, beautiful=false;
+Boolean animate=true, linear=true, circular=true, beautiful=false, car=false, jarek=false;
+PImage textureSource, jarekImg;
 float len=60; // length of arrows
 //**************************** initialization ****************************
 void setup() {               // executed once at the begining 
-  size(600, 600);            // window size
+  size(1000,800, P3D);            // window size
   frameRate(30);             // render 30 frames per second
   smooth();                  // turn on antialiasing
-  myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
+  myFace = loadImage("data/group.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
+  textureSource = loadImage("data/car.jpg");
+  jarekImg = loadImage("data/jarek.jpg");
   P.declare().resetOnCircle(3);
   P.loadPts("data/pts");
+  textureMode(NORMAL);
   }
 
 //**************************** display current frame ****************************
 void draw() {      // executed at each frame
   background(white); // clear screen and paints white background
   if(snapPic) beginRecord(PDF,PicturesOutputPath+"/P"+nf(pictureCounter++,3)+".pdf"); 
-  
   P.G[1]=P(P.G[0],len,U(P.G[0],P.G[1]));
   P.G[3]=P(P.G[2],len,U(P.G[2],P.G[3]));
   pt A=P.G[0], B=P.G[1], C=P.G[2], D=P.G[3]; 
@@ -77,7 +80,29 @@ void draw() {      // executed at each frame
     vec V= hermiteVec(A, C, AB, CD, t);
     fill(magenta); pen(magenta,3); show(P,4); drawObject(P,V);
     }
-
+    
+  if(car) {
+    float a = angle(AB,CD);
+    fill(red); scribeHeader("4-CAR",4); 
+    pt lastP = carPt(A, C, AB, CD, 0.f);
+    for(float s=0; s<=t; s+=0.1) {
+     // for each s compute (P,V) for beautiful motion from (A,AB) to (C,CD)
+      pt P = carPt(A, C, AB, CD, s);
+      vec V= carVec(A, C, AB, CD, s);
+     
+      noFill(); pen(red,3); line(lastP.x, lastP.y, P.x, P.y);
+      lastP = P;
+      }
+    pt endP = carPt(A, C, AB, CD, t);
+    line(lastP.x, lastP.y, endP.x, endP.y);
+   // for t compute (P,V) for beautiful motion from (A,AB) to (C,CD)
+     
+    pt P = carPt(A, C, AB, CD, t);
+    vec V= carVec(A, C, AB, CD, t);
+    
+    fill(red); pen(magenta,3); show(P,4); 
+    noFill(); noStroke(); drawCar(P,V);
+    }
   pen(green,3); fill(green); show(A,4);  arrow(A,B); // show the start and end arrows
   pen(red,3); fill(red); show(C,4);  arrow(C,D); 
 
@@ -102,6 +127,8 @@ void keyPressed() { // executed each time a key is pressed: sets the "keyPressed
   if(key=='1') linear=!linear;
   if(key=='2') circular=!circular;
   if(key=='3') beautiful=!beautiful;
+  if(key=='4') car=!car;
+  if(key=='j') jarek=!jarek;
   if(key=='Q') exit();  // quit application
   change=true; // to make sure that we save a movie frame each time something changes
   }
@@ -126,14 +153,26 @@ void mouseDragged() {
 String title ="CA 2015 P1: Interpolation", 
        name ="Student: James Moak, Deep Ghosh",
        menu="?:(show/hide) help, a: animate, `:snap picture, ~:(start/stop) recording movie frames, Q:quit",
-       guide="drag:edit P&V, t/r/z:trans/rotate/zoom all, 1/2/3:toggle linear/circular/beautiful"; // help info
+       guide="drag:edit P&V, t/r/z:trans/rotate/zoom all, 1/2/3/4:toggle linear/circular/beautiful/car, j:jarek-mode"; // help info
 
 void drawObject(pt P, vec V) {
   beginShape(); 
-    v(P(P(P,1,V),0.25,R(V)));
-    v(P(P(P,1,V),-0.25,R(V)));
-    v(P(P(P,-1,V),-0.25,R(V)));
-    v(P(P(P,-1,V),0.25,R(V))); 
+    if (jarek) texture(jarekImg);
+    v(P(P(P,1,V),0.25,R(V)), 0, 0);
+    v(P(P(P,1,V),-0.25,R(V)), 1, 0);
+    v(P(P(P,-1,V),-0.25,R(V)), 1, 1);
+    v(P(P(P,-1,V),0.25,R(V)), 0, 1); 
+  endShape(CLOSE);
+  }
+  
+void drawCar(pt P, vec V) {
+  beginShape(); 
+    texture(textureSource);
+    if (jarek) texture(jarekImg);
+    v(P(P(P,0.9,V),0.4,R(V)), 0, 0);
+    v(P(P(P,0.9,V),-0.4,R(V)), 1, 0);
+    v(P(P(P,-0.9,V),-0.4,R(V)), 1, 1);
+    v(P(P(P,-0.9,V),0.4,R(V)), 0, 1); 
   endShape(CLOSE);
   }
   
