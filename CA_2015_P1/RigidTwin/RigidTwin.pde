@@ -181,7 +181,7 @@ void mouseDragged() {
 String title ="CA 2015 P1: Interpolation", 
        name ="Student: James Moak, Deep Ghosh",
        menu="?:(show/hide) help, a: animate, `:snap picture, ~:(start/stop) recording movie frames, Q:quit",
-       guide="drag:edit P&V, t/r/z:trans/rotate/zoom all, 1/2/3/4/5:toggle linear/circular/beautiful/car/hermite, j:jarek-mode"; // help info
+       guide="drag:edit P&V, t/r/z:trans/rotate/zoom all, 1/2/3/4/5:toggle linear/circular/beautiful/car/hermite, j:party-mode"; // help info
 
 void drawObject(pt P, vec V) {
   beginShape(); 
